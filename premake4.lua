@@ -12,13 +12,14 @@ solution "libssl"
 	local OPENSSL_DIR = ROOT_DIR .. "openssl_tarball/"
 	
 	configurations {
-		"release"
+		"release",
+		"debug",
 	}
 	
 	platforms {
+		"native",
 		"x32",
 		"x64",
-		"native",
 	}
 	
 	location (ROOT_DIR .. ".build/projects/")
