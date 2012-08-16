@@ -20,6 +20,13 @@ configuration {"x64", "vs*"}
 		"PLATFORM=\\\"VC-WIN64A\\\"",
 		"SIXTY_FOUR_BIT",
 	}
+	
+configuration {"xbox360"}
+	defines {
+		"PLATFORM=\\\"VC-XBOX360\\\"",
+		"B_ENDIAN",
+	}
+
 
 configuration {"nacl32"}
 	defines {
