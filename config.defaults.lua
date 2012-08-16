@@ -6,6 +6,7 @@ config = {
 	ec_nistp_64_gcc_128 = false,
 	rfc3779 = false,
 	sctp = false,
+	sock = true,
 
 	excluded_libs = {
 		"store",

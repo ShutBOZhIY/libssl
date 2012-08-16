@@ -47,6 +47,7 @@ local config_define_mapping = {
 	ec_nistp_64_gcc_128="EC_NISTP_64_GCC_128",
 	rfc3779="RFC3779",
 	sctp="SCTP",
+	sock="SOCK",
 }
 
 function update_defines()
