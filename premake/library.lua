@@ -7,9 +7,9 @@ function split_words(line)
 	return words
 end
 
-function library_excluded(libname, excluded)
+function library_excluded(libname, excluded, prefix)
 	for _, v in ipairs(excluded) do
-		if v == libname then
+		if prefix .. v == libname then
 			return true
 		end
 	end

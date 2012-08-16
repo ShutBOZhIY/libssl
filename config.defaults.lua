@@ -8,10 +8,10 @@ config = {
 	sctp = false,
 
 	excluded_libs = {
-		"crypto/store",
-		"crypto/jpake",
-		"crypto/rc5",
-		"crypto/md2",
-		"crypto/krb5",
+		"store",
+		"jpake",
+		"rc5",
+		"md2",
+		"krb5",
 	},
 }

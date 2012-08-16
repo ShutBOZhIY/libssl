@@ -40,7 +40,7 @@ solution "libssl"
 				os.copyfile(OPENSSL_DIR .. libname .. "/" .. header, ROOT_DIR .. "include/openssl/" .. header)
 			end
 			
-			if not library_excluded(libname, config.excluded_libs) then
+			if not library_excluded(libname, config.excluded_libs, "crypto/") then
 				for _, header in ipairs(lib.private_headers) do
 					os.copyfile(OPENSSL_DIR .. libname .. "/" .. header, ROOT_DIR .. ".build/privinclude/" .. header)
 				end
@@ -69,7 +69,7 @@ solution "libssl"
 		local libname, name, value
 		
 		for _, libname in ipairs(config.excluded_libs) do
-			table.insert(config_defines, "OPENSSL_NO_" .. string.upper(path.getname(libname)))
+			table.insert(config_defines, "OPENSSL_NO_" .. string.upper(libname))
 		end
 		
 		for name, value in ipairs(config_define_mapping) do
@@ -87,7 +87,7 @@ solution "libssl"
 			
 			local todisable = {}
 			for _, libname in ipairs(config.excluded_libs) do
-				todisable[path.getname(libname)] = true
+				todisable[libname] = true
 			end
 			
 			while true do
@@ -100,8 +100,8 @@ solution "libssl"
 					-- disabled project we've enabled?
 					local enable = true
 					for _, libname in ipairs(config.excluded_libs) do
-						if define == string.upper(path.getname(libname)) then
-							todisable[path.getname(libname)] = nil
+						if define == string.upper(libname) then
+							todisable[libname] = nil
 							enable = false
 							break
 						end
