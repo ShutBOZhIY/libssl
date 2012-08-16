@@ -15,7 +15,7 @@ end
 
 newplatform {
 	name = "nacl32",
-	description = "Chrome NativeClient",
+	description = "Chrome 32bit NativeClient",
 	gcc = {
 		cc = "x86_64-nacl-gcc",
 		cxx = "x86_64-nacl-g++",
@@ -34,3 +34,15 @@ newplatform {
 		cppflags = "-MMD -m64",
 	}
 }
+
+newplatform {
+	name = "mingw32",
+	description = "MinGW 32bit",
+	gcc = {
+		cc = "gcc",
+		gxx = "g++",
+		ar = "ar",
+		cppflags = "-MMD",
+	}
+}
+	
