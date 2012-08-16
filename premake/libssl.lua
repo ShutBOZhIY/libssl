@@ -73,6 +73,9 @@ function fixup_configheader()
 		for _, libname in ipairs(config.excluded_libs) do
 			todisable[libname] = true
 		end
+		for key, _ in pairs(config_define_mapping) do
+			todisable[key] = true
+		end
 		
 		while true do
 			local line = f:read("*line")
@@ -94,6 +97,7 @@ function fixup_configheader()
 				--disabled config we've enabled?
 				for key, value in pairs(config_define_mapping) do
 					if define == value and not config[key] then
+						todisable[key] = nil
 						enable = false
 						break
 					end
@@ -116,7 +120,7 @@ function fixup_configheader()
 			local words = split_words(line)
 			if #words == 2 and words[1] == "#ifndef" and words[2] == "OPENSSL_DOING_MAKEDEPEND" then
 				for libname, _ in pairs(todisable) do
-					f:write("/* " .. string.upper(libname) .. " disabled via premae config.lua */\n")
+					f:write("/* OPENSSL_NO_" .. string.upper(libname) .. " disabled via premae config.lua */\n")
 					f:write("#ifndef OPENSSL_NO_" .. string.upper(libname) .. "\n")
 					f:write("# define OPENSSL_NO_" .. string.upper(libname) .. "\n")
 					f:write("#endif\n")
