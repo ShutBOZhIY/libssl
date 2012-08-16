@@ -1,13 +1,6 @@
 local ROOT_DIR = path.getdirectory(_SCRIPT) .. "/"
 
 dofile (ROOT_DIR .. "premake/platforms.lua")
-dofile (ROOT_DIR .. "premake/library.lua")
-
-if os.isfile("config.lua") then
-	dofile (ROOT_DIR .. "config.lua")
-else
-	dofile (ROOT_DIR .. "config.defaults.lua")
-end
 
 solution "libssl"
 	configurations {

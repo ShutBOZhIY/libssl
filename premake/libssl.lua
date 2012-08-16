@@ -1,6 +1,14 @@
 local ROOT_DIR = path.getdirectory(_SCRIPT) .. "/../"
 local OPENSSL_DIR = ROOT_DIR .. "openssl_tarball/"
 
+dofile (ROOT_DIR .. "premake/library.lua")
+
+if os.isfile("config.lua") then
+	dofile (ROOT_DIR .. "config.lua")
+else
+	dofile (ROOT_DIR .. "config.defaults.lua")
+end
+
 local libraries = {}
 local crypto_source = {}
 local ssl_source = {}
