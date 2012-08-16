@@ -75,7 +75,9 @@ function fixup_configheader()
 			todisable[libname] = true
 		end
 		for key, _ in pairs(config_define_mapping) do
-			todisable[key] = true
+			if not config[key] then
+				todisable[key] = true
+			end
 		end
 		
 		while true do
