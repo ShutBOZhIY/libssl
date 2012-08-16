@@ -155,7 +155,6 @@ solution "libssl"
 	
 	if _ACTION then
 		os.rmdir(ROOT_DIR .. "include")
-		os.rmdir(ROOT_DIR .. "lib")
 		os.rmdir(ROOT_DIR .. ".build")
 
 		if _ACTION ~= "clean" then
