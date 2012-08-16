@@ -54,16 +54,15 @@ function parse_library(pathToMakefile)
 	return lib
 end
 
-function generate_libraries(OPENSSL_DIR, excluded_libs)
+function generate_libraries(OPENSSL_DIR)
 	local libraries = {}
 	print("Finding libraries...")
 	for _, makefile in ipairs(os.matchfiles(OPENSSL_DIR .. "crypto/**/Makefile")) do
 		local libname = string.gsub(path.getdirectory(makefile), OPENSSL_DIR .. "crypto/", "")
-		if not library_excluded("crypto/" .. libname, excluded_libs) then
-			libraries["crypto/"..libname] = parse_library(makefile)
-		end
+		libraries["crypto/"..libname] = parse_library(makefile)
 	end
 	libraries["crypto"] = parse_library(OPENSSL_DIR .. "crypto/Makefile")
 	libraries[""] = parse_library(OPENSSL_DIR .. "Makefile")
+	libraries["ssl"] = parse_library(OPENSSL_DIR .. "ssl/Makefile")
 	return libraries
 end

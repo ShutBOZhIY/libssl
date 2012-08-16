@@ -62,8 +62,9 @@ solution "libssl"
 		"crypto/krb5",
 	}
 
-	local libraries = generate_libraries(OPENSSL_DIR, excluded_libs)
+	local libraries = generate_libraries(OPENSSL_DIR)
 	local crypto_source = {}
+	local ssl_source = {}
 	
 	function copyheaders()
 		print("Copying public headers to include/openssl")
@@ -77,13 +78,20 @@ solution "libssl"
 			for _, header in ipairs(lib.public_headers) do
 				os.copyfile(OPENSSL_DIR .. libname .. "/" .. header, ROOT_DIR .. "include/openssl/" .. header)
 			end
-			for _, header in ipairs(lib.private_headers) do
-				os.copyfile(OPENSSL_DIR .. libname .. "/" .. header, ROOT_DIR .. ".build/privinclude/" .. header)
+			
+			if not library_excluded(libname, excluded_libs) then
+				for _, header in ipairs(lib.private_headers) do
+					os.copyfile(OPENSSL_DIR .. libname .. "/" .. header, ROOT_DIR .. ".build/privinclude/" .. header)
+				end
+				for _, source in ipairs(lib.source) do
+					if libname == "ssl" then
+						table.insert(ssl_source, OPENSSL_DIR .. libname .. "/" .. source)
+					else
+						table.insert(crypto_source, OPENSSL_DIR .. libname .. "/" .. source)
+					end
+				end
 			end
-			for _, source in ipairs(lib.source) do
-				table.insert(crypto_source, OPENSSL_DIR .. libname .. "/" .. source)
-			end
-		end		
+		end
 	end
 	
 	if _ACTION ~= "clean" then
@@ -95,7 +103,6 @@ solution "libssl"
 	end
 
 project "crypto"
-
 	language "C"
 	kind "StaticLib"
 
@@ -105,5 +112,22 @@ project "crypto"
 	}
 
 	files {
+		ROOT_DIR .. "include/openssl/**.h",
+		ROOT_DIR .. ".build/privinclude/**.h",
 		crypto_source
+	}
+
+project "ssl"
+	language "C"
+	kind "StaticLib"
+	
+	includedirs {
+		ROOT_DIR .. "include/",
+		ROOT_DIR .. ".build/privinclude",
+	}
+	
+	files {
+		ROOT_DIR .. "include/openssl/**.h",
+		ROOT_DIR .. ".build/privinclude/**.h",
+		ssl_source
 	}
