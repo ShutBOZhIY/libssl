@@ -21,7 +21,13 @@ solution "libssl"
 		"x32",
 		"x64",
 	}
-	
+
+	local platform_name = "multi"
+	if _ACTION=="gmake" and not _OPTIONS["platform"] then
+		print("Cannot build a gmake target without a platform from --platform")
+		os.exit(1)
+	end
+
 	location (ROOT_DIR .. ".build/projects/")
 	objdir (ROOT_DIR .. ".build/obj/")
 	targetdir (ROOT_DIR .. "lib/")
