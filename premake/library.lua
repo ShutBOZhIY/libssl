@@ -56,9 +56,14 @@ end
 
 function generate_libraries(OPENSSL_DIR)
 	local libraries = {}
+	local prefix = OPENSSL_DIR .. "crypto/"
+	
 	print("Finding libraries...")
-	for _, makefile in ipairs(os.matchfiles(OPENSSL_DIR .. "crypto/**/Makefile")) do
-		local libname = string.gsub(path.getdirectory(makefile), OPENSSL_DIR .. "crypto/", "")
+	for _, makefile in ipairs(os.matchfiles(prefix .. "**/Makefile")) do
+		local libname = path.getdirectory(makefile)
+		if string.sub(libname, 1, #prefix) == prefix then
+			libname = string.sub(libname, #prefix + 1)
+		end
 		libraries["crypto/"..libname] = parse_library(makefile)
 	end
 	libraries["crypto"] = parse_library(OPENSSL_DIR .. "crypto/Makefile")
